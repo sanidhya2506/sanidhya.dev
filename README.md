@@ -3,7 +3,7 @@
 A futuristic developer portfolio built with pure **HTML, CSS, and JavaScript** featuring terminal aesthetics, glassmorphism, smooth animations, particle effects, and interactive UI components.
 
 🌐 Live Website:  
-:https://sanidhya2506.github.io/sanidhya.dev/
+https://sanidhya2506.github.io/sanidhya.dev/
 
 ---
 
@@ -133,7 +133,7 @@ To deploy yourself:
 sanidhya2506@gmail.com
 
 ## GitHub
-:https://github.com/sanidhya2506
+https://github.com/sanidhya2506
 
 ---
 
