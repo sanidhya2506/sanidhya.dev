@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanidhya Sharma | Engineer & Researcher</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #00ff95;
+            --text-dim: #888;
+            --text-bright: #eee;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: var(--bg);
+            color: var(--text-bright);
+            font-family: var(--font-mono);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+        ::selection { background: var(--accent); color: var(--bg); }
+
+        /* LOADING SCREEN */
+        #loader {
+            position: fixed; width: 100%; height: 100%; background: #000;
+            z-index: 999999; display: flex; justify-content: center;
+            align-items: center; transition: 1s;
+        }
+        .terminal-loader { color: var(--accent); font-size: 1rem; line-height: 2; }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* BACKGROUND PARTICLES */
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem;
+            display: flex; justify-content: space-between; z-index: 100;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; color: var(--accent); letter-spacing: -1px; text-decoration: none; }
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 0.75rem; margin-left: 20px; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        /* FLOATING SIDEBAR ASSETS */
+        .side-email { position: fixed; right: 30px; bottom: 0; writing-mode: vertical-rl; z-index: 100; }
+        .side-email a { color: #666; text-decoration: none; font-size: 0.75rem; letter-spacing: 2px; transition: 0.3s; }
+        .side-email a:hover { color: var(--accent); }
+        
+        .social-bar { position: fixed; left: 30px; bottom: 30px; display: flex; flex-direction: column; gap: 20px; z-index: 100; }
+        .social-bar a { color: #888; text-decoration: none; transition: 0.3s; font-size: 0.8rem; }
+        .social-bar a:hover { color: var(--accent); transform: translateY(-5px); }
+
+        /* Main Section Controls */
+        section { padding: 120px 0 60px 0; opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        section.visible { opacity: 1; transform: translateY(0); }
+
+        /* Hero */
+        .hero h1 { font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-bottom: 24px; }
+        .hero .accent-text { color: var(--accent); text-shadow: 0 0 20px rgba(0, 255, 149, 0.3); }
+        .hero p { font-size: 1.1rem; color: var(--text-dim); max-width: 650px; margin-bottom: 2rem; }
+
+        .status-badge {
+            display: inline-flex; align-items: center; background: var(--glass);
+            padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border);
+            font-size: 0.75rem; margin-bottom: 20px;
+        }
+        .status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-right: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        /* Content Grid Layouts */
+        .section-header { border-left: 2px solid var(--accent); padding-left: 15px; margin-bottom: 3rem; }
+        .section-header h2 { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; }
+
+        .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; margin-top: 1rem; }
+        .about-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .mini-stat { text-align: center; }
+        .mini-stat h2 { color: var(--accent); font-size: 2rem; margin-bottom: 5px; letter-spacing: -1px; }
+        .mini-stat p { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+
+        .card {
+            background: var(--glass); border: 1px solid var(--border); padding: 2rem;
+            border-radius: 8px; transition: 0.4s; position: relative;
+            text-decoration: none; color: inherit; display: flex; flex-direction: column;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); background: rgba(0, 255, 149, 0.02); }
+        .card h3 { margin-bottom: 12px; font-size: 1.2rem; }
+        .card p { color: var(--text-dim); font-size: 0.85rem; flex-grow: 1; }
+        
+        .skill-tags, .card .tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag, .skill-tags span { font-size: 0.65rem; color: var(--text-dim); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; transition: 0.3s; }
+        .skill-tags span:hover { background: var(--accent); color: black; border-color: var(--accent); }
+
+        /* Marquee */
+        .marquee { width: 100vw; margin: 4rem 0; padding: 25px 0; background: var(--accent); color: var(--bg); font-weight: 800; overflow: hidden; white-space: nowrap; transform: rotate(-0.5deg); }
+        .marquee-inner { display: inline-block; animation: marquee 30s linear infinite; font-size: 1.2rem; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Experience/Timeline */
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+        .exp-item { margin-bottom: 3rem; position: relative; }
+        .exp-item::before { content: ''; position: absolute; left: -34px; top: 8px; width: 8px; height: 8px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+        .exp-date { font-size: 0.75rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
+
+        /* Quote */
+        .quote-box { padding: 100px 0; text-align: center; }
+        .quote-box h1 { font-size: clamp(1.5rem, 5vw, 3rem); line-height: 1.3; color: var(--text-bright); font-weight: 300; opacity: 0.8; }
+
+        /* Footer */
+        .terminal-footer { margin-top: 80px; padding: 60px 0 40px 0; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-dim); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 40px; }
+        .footer-grid h3 { margin-bottom: 10px; color: var(--accent); }
+        .footer-grid a { display: block; color: var(--text-dim); text-decoration: none; margin-bottom: 10px; font-size: 0.85rem; transition: 0.3s; }
+        .footer-grid a:hover { color: var(--accent); }
+        .copyright { text-align: center; color: #444; margin-top: 20px; font-size: 0.65rem; letter-spacing: 1px; }
+
+        @media(max-width:768px){
+            .about-grid, .footer-grid, .about-right { grid-template-columns: 1fr; }
+            .social-bar, .side-email { display: none; }
+            .hero h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="terminal-loader">
+            <p>> Initializing Portfolio...</p>
+            <p>> Loading Research Data...</p>
+            <p>> Establishing Neural Connection...</p>
+            <span class="blink">█</span>
+        </div>
+    </div>
+
+    <canvas id="particles"></canvas>
+
+    <nav>
+        <a href="#" class="logo">S.SHARMA</a>
+        <div class="links">
+            <a href="#about">ABOUT</a>
+            <a href="#projects">WORK</a>
+            <a href="#experience">EXP</a>
+            <a href="mailto:sanidhya2506@gmail.com">CONNECT</a>
+        </div>
+    </nav>
+
+    <div class="side-email"><a href="mailto:sanidhya2506@gmail.com">sanidhya2506@gmail.com</a></div>
+    <div class="social-bar">
+        <a href="https://github.com/sanidhya2506" target="_blank">GH</a>
+        <a href="https://www.linkedin.com/in/sanidhyas1/" target="_blank">LI</a>
+        <a href="#" target="_blank">TW</a>
+    </div>
+
+    <div class="container">
+        <section class="hero visible">
+            <div class="status-badge"><span class="status-dot"></span> OPEN_FOR_2026_INTERNSHIPS</div>
+            <h1>Building <span class="accent-text">Friction-Aware</span> Systems.</h1>
+            <p>
+                Computer Science Undergraduate specializing in scalable backend architecture and Applied ML. 
+                I focus on translating complex data patterns into human-centric digital products.
+            </p>
+        </section>
+
+        <section id="about">
+            <div class="section-header"><h2>ABOUT ME</h2></div>
+            <div class="about-grid">
+                <div class="about-left card">
+                    <h3>PROFILE DEEP DIVE</h3>
+                    <p style="margin-top: 15px;">I don't just build projects. I engineer systems that solve friction. My work exists at the intersection of Machine Learning, Human-Centered Design, and Software Engineering.</p>
+                    <p style="margin-top: 15px;">I enjoy transforming abstract research concepts into scalable products people can actually use.</p>
+                </div>
+                <div class="about-right">
+                    <div class="mini-stat card"><h2>8.8</h2><p>CGPA</p></div>
+                    <div class="mini-stat card"><h2>199</h2><p>State Rank</p></div>
+                    <div class="mini-stat card"><h2>300+</h2><p>Students Led</p></div>
+                    <div class="mini-stat card"><h2>2027</h2><p>Graduation</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="core-stack">
+            <div class="section-header"><h2>TECH STACK</h2></div>
+            <div class="grid">
+                <div class="card">
+                    <h3>Languages & Core</h3>
+                    <p>Highly proficient in Data Structures & Algorithms, Object-Oriented Programming, and Core OS Concepts.</p>
+                    <div class="skill-tags"><span>C++</span><span>Java</span><span>SQL</span><span>Linux</span><span>Scala</span></div>
+                </div>
+                <div class="card">
+                    <h3>Data Intelligence & AI</h3>
+                    <p>Building high-performance analytical pipelines, custom similarity models, and statistical deployments.</p>
+                    <div class="skill-tags"><span>Python</span><span>Apache Spark</span><span>Hadoop</span><span>Scikit-learn</span><span>NLP</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="section-header"><h2>PRODUCTION LOGS</h2></div>
+            <div class="grid">
+                <div class="card">
+                    <h3>ABlytics: A/B Testing</h3>
+                    <p>Analyzed 294,478 user records to calculate conversion rate lift (identifying a 1.23% drop). Performed t-tests with a p-value of 0.216 to guide precise feature deployment strategies.</p>
+                    <div class="tags"><span class="tag">SCIPY</span><span class="tag">PANDAS</span><span class="tag">STATISTICS</span></div>
+                </div>
+                <div class="card">
+                    <h3>Customer Churn Prediction</h3>
+                    <p>Achieved 79% accuracy using Random Forest processing models on 7,043 customer accounts. Segmented system users into explicit loyal vs. high-risk clusters via customized K-Means models.</p>
+                    <div class="tags"><span class="tag">ML</span><span class="tag">CLUSTERING</span><span class="tag">FEATURE_ENG</span></div>
+                </div>
+                <div class="card">
+                    <h3>MyMatcha Engine</h3>
+                    <p>End-to-end Machine Learning ecosystem utilizing custom TF-IDF text vectorization algorithms and NLP logic layers for personalized, alternative niche recommendations.</p>
+                    <div class="tags"><span class="tag">NLTK</span><span class="tag">FLASK</span><span class="tag">SIMILARITY_MODELS</span></div>
+                </div>
+                <div class="card">
+                    <h3>Human-Centric Experiments</h3>
+                    <p>Architecting minimalist, intentional spaces like <em>Parivaar</em> (collective archiving ecosystems) and <em>Essay2Dating</em> (photo-free, matching architectures relying strictly on written intent).</p>
+                    <div class="tags"><span class="tag">PRODUCT_DESIGN</span><span class="tag">FIREBASE</span><span class="tag">FIRESTORE</span></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="marquee">
+        <div class="marquee-inner">
+            &nbsp; SOLUTION ENGINEERING &nbsp; // &nbsp; DATA SCIENCE &nbsp; // &nbsp; BACKEND DEV &nbsp; // &nbsp; RESEARCH &nbsp; // &nbsp; SYSTEM DESIGN &nbsp; // &nbsp; SOLUTION ENGINEERING &nbsp; // &nbsp; DATA SCIENCE &nbsp; // &nbsp; BACKEND DEV &nbsp; // &nbsp; RESEARCH &nbsp; // &nbsp; SYSTEM DESIGN &nbsp;
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="experience">
+            <div class="section-header"><h2>MILESTONES</h2></div>
+            <div class="timeline">
+                <div class="exp-item">
+                    <div class="exp-date">2024 - PRESENT</div>
+                    <h3>Training & Placement Coordinator</h3>
+                    <p>Managing complete training structures for over 300+ university peers and orchestrating high-volume logistical paths across corporate recruitment tracks.</p>
+                </div>
+                <div class="exp-item">
+                    <div class="exp-date">2023 - AWARDED</div>
+                    <h3>State Merit Rank 199</h3>
+                    <p>Placed within the top 199 out of 100,000+ state candidates in the Senior Secondary Board Evaluations. Commended with a Government Merit Tablet recognition award.</p>
+                </div>
+                <div class="exp-item">
+                    <div class="exp-date">RESEARCH ARCHIVE</div>
+                    <h3>Zenodo Tracking Publications</h3>
+                    <p>Ensuring end-to-end structural validation by archiving technical deployment logs, production blueprints, and digital architecture artifacts behind cryptographically secure persistent DOIs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quote">
+            <div class="quote-box">
+                <h1>“Technology should reduce human confusion, not increase it.”</h1>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="section-header"><h2>PING</h2></div>
+            <div class="card" style="border-style: dashed; text-align: center;">
+                <p style="margin-bottom: 20px;">Currently operating out of Ajmer, Rajasthan. Available for global structural remote solutions or localized core analytical teams.</p>
+                <a href="mailto:sanidhya2506@gmail.com" style="color: var(--accent); text-decoration: none; font-weight: 800; font-size: 1.5rem;">[SEND_EMAIL]</a>
+            </div>
+        </section>
+
+        <footer class="terminal-footer">
+            <div class="footer-grid">
+                <div>
+                    <h3>SANIDHYA SHARMA</h3>
+                    <p>AI/ML Engineer • Researcher • Developer</p>
+                    <p style="font-size: 0.7rem; margin-top: 10px; color: #555;">RUNNING_ON: BIKANER_TECHNICAL_UNIVERSITY_SERVER</p>
+                </div>
+                <div>
+                    <h4>Navigation</h4>
+                    <a href="#about">About System</a>
+                    <a href="#projects">Production Logs</a>
+                    <a href="#experience">Milestones</a>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <a href="mailto:sanidhya2506@gmail.com">Email Gateway</a>
+                    <a href="https://github.com/sanidhya2506" target="_blank">GitHub Sync</a>
+                    <a href="https://www.linkedin.com/in/sanidhyas1/" target="_blank">LinkedIn Sync</a>
+                </div>
+            </div>
+            <div class="copyright">© 2026 • DESIGNED & ENGINEERED BY SANIDHYA SHARMA • VERSION 2.0.26</div>
+        </footer>
+    </div>
+
+    <script>
+        // PRE-LOADER TIMEOUT CONTROL
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                document.getElementById("loader").style.opacity = "0";
+                setTimeout(() => { 
+                    document.getElementById("loader").style.display = "none"; 
+                }, 1000);
+            }, 2000);
+        });
+
+        // HIGH PERFORMANCE BACKGROUND PARTICLE ENGINE
+        const canvas = document.getElementById("particles");
+        const ctx = canvas.getContext("2d");
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particlesArray = [];
+        
+        class Particle {
+            constructor(){
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+            }
+            update(){
+                this.x += this.speedX; 
+                this.y += this.speedY;
+                if(this.x > canvas.width) this.x = 0; 
+                if(this.x < 0) this.x = canvas.width;
+                if(this.y > canvas.height) this.y = 0; 
+                if(this.y < 0) this.y = canvas.height;
+            }
+            draw(){
+                ctx.fillStyle = "rgba(0, 255, 149, 0.25)";
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                ctx.fill();
+            }
+        }
+        
+        for(let i = 0; i < 100; i++){ 
+            particlesArray.push(new Particle()); 
+        }
+        
+        function animate(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach((p) => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // SCROLL ANIMATION INTERSECTION OBSERVER
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
