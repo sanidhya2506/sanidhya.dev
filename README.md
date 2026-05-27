@@ -1,9 +1,9 @@
-# 🚀 Sanidhya Sharma — Developer Portfolio
+# 🚀 S.Sharma; Developer Portfolio
 
 A futuristic developer portfolio built with pure **HTML, CSS, and JavaScript** featuring terminal aesthetics, glassmorphism, smooth animations, particle effects, and interactive UI components.
 
 🌐 Live Website:  
-:contentReference[oaicite:0]{index=0}
+:https://sanidhya2506.github.io/sanidhya.dev/
 
 ---
 
@@ -78,10 +78,6 @@ ML-based recommendation engine using TF-IDF and content-based filtering.
 
 ## Customer Churn Prediction
 Machine learning pipeline for churn analysis and customer segmentation.
-
-## PlantTalk
-AI concept translating plant conditions into human-like emotions and speech.
-
 ---
 
 # 🏆 Achievements
@@ -94,11 +90,6 @@ AI concept translating plant conditions into human-like emotions and speech.
 
 ---
 
-# 📸 Preview
-
-<img width="100%" alt="Portfolio Preview" src="https://raw.githubusercontent.com/sanidhya2506/sanidhya.dev/main/assets/preview.png">
-
----
 
 # ⚙️ Installation & Setup
 
@@ -142,7 +133,7 @@ To deploy yourself:
 sanidhya2506@gmail.com
 
 ## GitHub
-:contentReference[oaicite:1]{index=1}
+:https://github.com/sanidhya2506
 
 ---
 
